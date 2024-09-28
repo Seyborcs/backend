@@ -15,4 +15,4 @@ def add_point(lon: str, lat: str):
 
 @router.get("/search_proximity")
 def search_proximity(lon: str, lat: str, dir: str):
-    return db.search_proximity(Point.create(lon, lat), dir)
+    return db.search_proximity(Point.create(lon, lat), int(dir))
