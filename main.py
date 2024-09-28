@@ -2,7 +2,19 @@ from typing import Union
 
 from fastapi import FastAPI
 
+from .routers import test1, test2
+
 app = FastAPI()
+
+app.include_router(
+    test1.router,
+    prefix="/test1"
+)
+
+app.include_router(
+    test2.router,
+    prefix="/test2"
+)
 
 
 @app.get("/")
