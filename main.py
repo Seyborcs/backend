@@ -2,7 +2,7 @@ from typing import Union
 
 from fastapi import FastAPI
 
-from .routers import test1, test2
+from .routers import test1, test2, db_test
 
 app = FastAPI()
 
@@ -14,6 +14,11 @@ app.include_router(
 app.include_router(
     test2.router,
     prefix="/test2"
+)
+
+app.include_router(
+    db_test.router,
+    prefix="/db_test"
 )
 
 
