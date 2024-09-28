@@ -2,7 +2,7 @@ from typing import Union
 
 from fastapi import FastAPI
 
-from .routers import db_test, events
+from .routers import db_test, events, trivia
 
 app = FastAPI()
 
@@ -14,6 +14,11 @@ app.include_router(
 app.include_router(
     events.router,
     prefix="/event"
+)
+
+app.include_router(
+    trivia.router,
+    prefix="/trivia"
 )
 
 
