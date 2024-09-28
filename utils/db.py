@@ -4,10 +4,26 @@ from .event import Event, EventEncoder
 from .point import Point
 from .directions import Directions
 import os.path
+from time import time
 
 
 DB_FILE_NAME = "db.json"
 
+USER_ADDED = [
+    "droga zamknięta",
+    "koniec drogi",
+    "zła nawierzchnia",
+    "wiszące gałęzie",
+    "niebezpieczne skrzyżowanie",
+    "duży ruch drogowy",
+    "wypadek",
+    "wysoki podjazd"
+]
+
+MALOPOLSKA_ADDED = [
+    "punkty naprawcze",
+    "niebezpieczne miejsce"
+]
 
 def create_file(file_name):
     with open(file_name, "x") as file:
@@ -74,7 +90,7 @@ def _search_proximity(data: List[Event], point: Point, dir: Directions):
     move_area = 5
     area_radius = 15
 
-    area_center = point.add(dir_to_point(dir).scale(move_area))
+    area_center = point.add(dir_to_point(dir).scale(move_area)) # add?
 
     return [
         event
@@ -83,4 +99,22 @@ def _search_proximity(data: List[Event], point: Point, dir: Directions):
     ]
 
 def search_proximity(point: Point, dir: Directions):
-    return read_db(DB_FILE_NAME, _search_proximity, point, dir)
+    return filter(_active, read_db(DB_FILE_NAME, _search_proximity, point, dir))
+
+def _get_duration(kind: str) -> float:
+    if kind in USER_ADDED:
+        return 86400
+    return 9999999999999999
+
+def _active(e: Event) -> bool:
+    duration = _get_duration(e.kind)
+    now = time()
+    return e.t + duration < now
+
+def _distance(x: Point, center: Point) -> float:
+    return x.dist(center)
+
+def search_proximity_active(point: Point, dir: Directions):
+    events = search_proximity(point, dir)
+    distance = lambda x: _distance(x, point)
+    return events.sort(key=distance)

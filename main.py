@@ -13,7 +13,7 @@ app.include_router(
 
 app.include_router(
     events.router,
-    prefix="/event"
+    prefix="/events"
 )
 
 app.include_router(
