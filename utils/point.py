@@ -1,15 +1,10 @@
 from math import sqrt
+from .event import Event
 
 class Point:
     def __init__(self, lon, lat):
         self.lon = float(lon)
         self.lat = float(lat)
-
-        if not self.validate():
-            print("warn: invalid point")
-
-    def validate(self):
-        return self.lon >= -180 and self.lon <= 180 and self.lat >= -90 and self.lat <= 90
 
     def add(self, p):
         return Point.create(self.lon + p.lon, self.lat + p.lat)
@@ -38,5 +33,12 @@ class Point:
         return Point(
             lon,
             lat
+        )
+
+    @staticmethod
+    def from_event(event: Event):
+        return Point(
+            event.lon,
+            event.lat
         )
 

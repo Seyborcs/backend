@@ -1,5 +1,6 @@
 import json
 from typing import List
+from .event import Event, EventEncoder
 from .point import Point
 from .directions import Directions
 import os.path
@@ -21,28 +22,25 @@ def read_db(file_name, fun, *args, **kwargs):
         data = data.read() or "[]"
 
     return fun([
-        Point.from_dict(obj)
+        Event(**obj)
         for obj in json.loads(data)
     ], *args, **kwargs)
 
 
-def write_db(file_name, data: List[Point]):
+def write_db(file_name, data: List[Event]):
     if not os.path.exists(file_name):
         create_file(file_name)
 
     with open(file_name, "w") as file:
-        file.write(json.dumps([
-            p.to_dict()
-            for p in data
-        ]))
+        file.write(json.dumps(data, cls=EventEncoder))
 
 
-def _insert(data: List[Point], new_point: Point) -> List[Point]:
+def _insert(data: List[Event], new_point: Event) -> List[Event]:
     return data + [new_point]
     
 
-def insert(p: Point):
-    data = read_db(DB_FILE_NAME, _insert, p)
+def insert(event: Event):
+    data = read_db(DB_FILE_NAME, _insert, event)
 
     write_db(DB_FILE_NAME, data)
 
@@ -72,16 +70,16 @@ def dir_to_point(dir: Directions):
             return Point.create(0, 0)
 
 
-def _search_proximity(data: List[Point], point: Point, dir: Directions):
+def _search_proximity(data: List[Event], point: Point, dir: Directions):
     move_area = 5
     area_radius = 15
 
     area_center = point.add(dir_to_point(dir).scale(move_area))
 
     return [
-        p
-        for p in data
-        if p.dist(area_center) <= area_radius
+        event
+        for event in data
+        if Point.from_event(event).dist(area_center) <= area_radius
     ]
 
 def search_proximity(point: Point, dir: Directions):

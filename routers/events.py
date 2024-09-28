@@ -4,6 +4,8 @@ import time
 
 from ..utils.directions import Directions
 from ..utils.event import Event 
+from ..utils.point import Point
+from ..utils import db
 
 class EventForm(BaseModel):
     lon: float
@@ -42,10 +44,12 @@ def return_events(prevlon: float, prevlat: float, furlon: float, furlat: float):
             else:
                 direction = Directions.WEST_NORTH
 
-    return {"direction": direction}
+
+    return db.search_proximity(Point.create(furlon, furlat), direction)
 
 @router.post("/")
-def addEvent(event: EventForm):
+def add_event(event: EventForm):
     t = time.time()
-    # serializacja
+
     e = Event(event.lon, event.lat, event.kind, t)
+    db.insert(e)
