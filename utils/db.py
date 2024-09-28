@@ -10,19 +10,19 @@ from time import time
 DB_FILE_NAME = "db.json"
 
 USER_ADDED = [
-    "droga zamknięta",
-    "koniec drogi",
-    "zła nawierzchnia",
-    "wiszące gałęzie",
-    "niebezpieczne skrzyżowanie",
-    "duży ruch drogowy",
-    "wypadek",
-    "wysoki podjazd"
+    "road_closed",
+    "end_of_the_road",
+    "bad_surface",
+    "hanging_branches",
+    "dangerous_intersection",
+    "heavy_traffic",
+    "accident",
+    "steep_incline"
 ]
 
 MALOPOLSKA_ADDED = [
-    "punkty naprawcze",
-    "niebezpieczne miejsce"
+    "repair_points",
+    "dangerous_place"
 ]
 
 def create_file(file_name):
@@ -86,20 +86,17 @@ def dir_to_point(dir: Directions):
             return Point.create(0, 0)
 
 
-def _search_proximity(data: List[Event], point: Point, dir: Directions):
-    move_area = 5
+def _search_proximity(data: List[Event], point: Point):
     area_radius = 15
-
-    area_center = point.add(dir_to_point(dir).scale(move_area)) # add?
 
     return [
         event
         for event in data
-        if Point.from_event(event).dist(area_center) <= area_radius
+        if Point.from_event(event).dist(point) <= area_radius
     ]
 
-def search_proximity(point: Point, dir: Directions):
-    return filter(_active, read_db(DB_FILE_NAME, _search_proximity, point, dir))
+def search_proximity(point: Point):
+    return list(filter(_active, read_db(DB_FILE_NAME, _search_proximity, point)))
 
 def _get_duration(kind: str) -> float:
     if kind in USER_ADDED:
@@ -109,12 +106,12 @@ def _get_duration(kind: str) -> float:
 def _active(e: Event) -> bool:
     duration = _get_duration(e.kind)
     now = time()
-    return e.t + duration < now
+    return e.t + duration > now
 
 def _distance(x: Point, center: Point) -> float:
     return x.dist(center)
 
-def search_proximity_active(point: Point, dir: Directions):
-    events = search_proximity(point, dir)
+def search_proximity_active(point: Point):
+    events = search_proximity(point)
     distance = lambda x: _distance(x, point)
     return events.sort(key=distance)

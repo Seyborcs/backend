@@ -15,37 +15,8 @@ class EventForm(BaseModel):
 router = APIRouter()
 
 @router.get("/")
-def return_events(prevlon: float, prevlat: float, furlon: float, furlat: float):
-    dx = furlon - prevlon
-    dy = furlat - prevlat
-
-    if dx == 0:
-        if dy > 0:
-            direction = Directions.NORTH
-        elif dy < 0:
-            direction = Directions.SOUTH
-        else:
-            direction = Directions.NONE
-    elif dy == 0:
-        if dx > 0:
-            direction = Directions.EAST
-        else:
-            direction = Directions.WEST
-    else:
-        tan = dy/dx 
-        if tan > 0:
-            if dx > 0:
-                direction = Directions.EAST_NORTH
-            else:
-                direction = Directions.WEST_SOUTH
-        else:
-            if dx > 0:
-                direction = Directions.EAST_SOUTH
-            else:
-                direction = Directions.WEST_NORTH
-
-
-    return db.search_proximity(Point.create(furlon, furlat), direction)
+def return_events(lon: float, lat: float):
+    return db.search_proximity(Point.create(lon, lat))
 
 @router.post("/")
 def add_event(event: EventForm):
