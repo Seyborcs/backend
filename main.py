@@ -2,23 +2,18 @@ from typing import Union
 
 from fastapi import FastAPI
 
-from .routers import test1, test2, db_test
+from .routers import db_test, events
 
 app = FastAPI()
 
 app.include_router(
-    test1.router,
-    prefix="/test1"
-)
-
-app.include_router(
-    test2.router,
-    prefix="/test2"
-)
-
-app.include_router(
     db_test.router,
     prefix="/db_test"
+)
+
+app.include_router(
+    events.router,
+    prefix="/event"
 )
 
 
