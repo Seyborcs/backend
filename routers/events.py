@@ -23,6 +23,7 @@ def add_event(event: EventForm):
     if event.kind not in db.USER_ADDED and event.kind not in db.MALOPOLSKA_ADDED:
         raise HTTPException(status_code=400, detail="Unknown kind!")
     t = time.time()
+    id = len(db.get_all()) + 1
 
-    e = Event(event.lon, event.lat, event.kind, t)
+    e = Event(id, event.lon, event.lat, event.kind, t)
     db.insert(e)

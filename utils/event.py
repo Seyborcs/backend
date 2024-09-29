@@ -4,6 +4,7 @@ import dataclasses
 
 @dataclass
 class Event:
+    id: int
     lon: float
     lat: float
     kind: str
