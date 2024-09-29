@@ -5,16 +5,16 @@ from random import randint
 router = APIRouter()
 
 trivias = [
-        {"title": "Historia", "content": "Pneumatyczną oponę rowerową wynalazł w 1888 roku szkocki lekarz weterynarii John Boyd Dunlop."},
-        {"title": "Popularność w Amsterdamie", "content": "Blisko 60% z 1,2 miliona mieszkańców Amsterdamu używa roweru jako podstawowego środka lokomocji."},
-        {"title": "Spalanie kalorii", "content": "Przeciętny mężczyzna pokonując rowerem 100 km ze średnią prędkością 20 km/h, spali około 3400 kcal."},
-        {"title": "Rekord prędkości", "content": "Rekord prędkości w jeździe na rowerze poziomym po płaskiej nawierzchni wynosi 132,5 km/h."},
-        {"title": "Warszawskie Towarzystwo Cyklistów", "content": "Jest jedną z najstarszych polskich organizacji sportowych, liczy blisko 130 lat."},
-        {"title": "Rower w kulturze", "content": "Welocyped i bicykl to pierwotne nazwy roweru."},
-        {"title": "Rower dla każdego", "content": "Dla osób starszych są specjalne rowery trzykołowe z wygodnym siedzeniem."},
-        {"title": "Handbike", "content": "Jest to rower dla osób niepełnosprawnych, napędzany rękami."},
-        {"title": "Zmniejszenie liczby dzieci jeżdżących do szkoły", "content": "W ciągu ostatnich 30 lat liczba dzieci na świecie, które chodzą lub jeżdżą rowerem do szkoły, spadła z 82% do zaledwie 14%"},
-        {"title": "Historia", "content": "Pierwszy rower, znany jako “drezyna”, został wynaleziony przez Karla von Drais w 1817 roku."},
+    {"title": "Obowiązkowe wyposażenie roweru", "content": "Rower musi być wyposażony w światła przednie i tylne, odblaski, dzwonek oraz sprawne hamulce."},
+    {"title": "Jazda po chodniku", "content": "Rowerzysta może jechać po chodniku, jeśli opiekuje się dzieckiem do lat 10 jadącym na rowerze, lub gdy warunki pogodowe zagrażają bezpieczeństwu."},
+    {"title": "Droga dla rowerów", "content": "Rowerzysta ma obowiązek korzystać z drogi dla rowerów, jeśli jest ona wyznaczona."},
+    {"title": "Przejazd przez przejście dla pieszych", "content": "Rowerzysta powinien przeprowadzać rower przez przejście dla pieszych, chyba że jest to przejazd dla rowerów."},
+    {"title": "Kask ochronny", "content": "W Polsce nie ma obowiązku noszenia kasku ochronnego przez rowerzystów, choć jest to zalecane."},
+    {"title": "Jazda obok siebie", "content": "Rowerzyści mogą jechać obok siebie, jeśli nie utrudnia to ruchu innych pojazdów."},
+    {"title": "Zakaz jazdy po autostradach", "content": "Rowerzyści nie mogą poruszać się po autostradach i drogach ekspresowych."},
+    {"title": "Sygnalizowanie manewrów", "content": "Rowerzysta ma obowiązek sygnalizować zamiar skrętu lub zmiany pasa ruchu ręką."},
+    {"title": "Minimalny wiek rowerzysty", "content": "Dzieci do lat 10 mogą jeździć rowerem po drogach publicznych tylko pod opieką osoby dorosłej."},
+    {"title": "Mandaty za łamanie przepisów", "content": "Za nieprzestrzeganie przepisów ruchu drogowego rowerzysta może otrzymać mandat, który może wynieść nawet 2,5 tys. złotych."},
     {"title": "dupa", "content": "pieprzyć"},
     {"title": "dupa1", "content": "pieprzyć"},
     {"title": "dupa2", "content": "pieprzyć"}
@@ -22,4 +22,4 @@ trivias = [
 
 @router.get("/")
 def getTrivia():
-    return trivias[randint(0, len(trivias)-1)]
+    return trivias[randint(0, len(trivias)-4)]
